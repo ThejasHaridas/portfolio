@@ -1,101 +1,247 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
+import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import { motion } from "framer-motion";
+import Background3D from "@/components/Background3D";
+import ProjectModal from "@/components/ProjectModal";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [selectedProject, setSelectedProject] = useState<(typeof projects)[0] | null>(null);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  return (
+    <>
+      <Background3D />
+      
+      {selectedProject && (
+        <ProjectModal
+          project={selectedProject}
+          onClose={() => setSelectedProject(null)}
+        />
+      )}
+
+      {/* Hero Section */}
+      <section className="min-h-screen flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-center"
+        >
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 text-white">
+            Thejas Haridas
+          </h1>
+          <p className="text-xl sm:text-2xl text-gray-300 mb-8">
+            Data Analytics & Computer Science
+          </p>
+          <div className="flex gap-4 justify-center mb-12">
+            <a
+              href="#projects"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-colors"
+            >
+              View Projects
+            </a>
+            <a
+              href="#contact"
+              className="border border-blue-600 text-blue-600 hover:bg-blue-900/20 px-6 py-3 rounded-lg transition-colors"
+            >
+              Contact Me
+            </a>
+          </div>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="absolute bottom-8"
+        >
+          <ChevronDownIcon className="h-6 w-6 animate-bounce text-white" />
+        </motion.div>
+      </section>
+
+      {/* About Section */}
+      <section id="about" className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-900/50 backdrop-blur-sm">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl font-bold mb-8 text-white">About Me</h2>
+          <div className="prose dark:prose-invert max-w-none">
+            <p className="mb-6 text-gray-300">
+              Hello! I'm Thejas Haridas, a master's student specializing in Computer Science with a focus on Data Analytics. 
+              As an aspiring Data Analyst, I have a solid foundation in Python programming, machine learning concepts, and document processing. 
+              My passion lies in leveraging data-driven insights to solve real-world problems.
+            </p>
+            <p className="text-gray-300">
+              Currently, I am gaining hands-on experience as a Research and Development intern at Digital University, 
+              where I focus on cutting-edge projects involving OCR and LLMs.
+            </p>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </section>
+
+      {/* Projects Section */}
+      <section id="projects" className="py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold mb-12 text-white">Featured Projects</h2>
+          <div className="grid gap-8 md:grid-cols-2">
+            {projects.map((project, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                onClick={() => setSelectedProject(project)}
+                className="bg-gray-900/50 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg cursor-pointer hover:bg-gray-800/50 transition-colors"
+              >
+                <div className="p-6">
+                  <h3 className="text-xl font-bold mb-3 text-white">{project.title}</h3>
+                  <p className="text-gray-300 mb-4">
+                    {project.description}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {project.technologies.map((tech, techIndex) => (
+                      <span
+                        key={techIndex}
+                        className="bg-blue-900/50 text-blue-200 text-sm px-3 py-1 rounded-full"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Skills Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-900/50 backdrop-blur-sm">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl font-bold mb-12 text-white">Skills</h2>
+          <div className="grid gap-8 md:grid-cols-2">
+            <div>
+              <h3 className="text-xl font-semibold mb-4 text-white">Programming & Frameworks</h3>
+              <ul className="space-y-2 text-gray-300">
+                <li>Python</li>
+                <li>TensorFlow/Keras</li>
+                <li>Streamlit</li>
+                <li>PyTorch</li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold mb-4 text-white">Tools & Libraries</h3>
+              <ul className="space-y-2 text-gray-300">
+                <li>Tesseract OCR</li>
+                <li>Transformers</li>
+                <li>Matplotlib/Seaborn</li>
+                <li>Swarm Library</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl font-bold mb-8 text-white">Get in Touch</h2>
+          <p className="text-xl mb-8 text-gray-300">
+            I'm always open to new opportunities and collaborations.
+          </p>
+          <div className="flex justify-center gap-6">
+            <a
+              href="mailto:thejasharidas@gmail.com"
+              className="text-blue-400 hover:text-blue-300 transition-colors"
+            >
+              Email
+            </a>
+            <a
+              href="https://www.linkedin.com/in/thejas-haridas"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-400 hover:text-blue-300 transition-colors"
+            >
+              LinkedIn
+            </a>
+            <a
+              href="https://github.com/ThejasHaridas"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-400 hover:text-blue-300 transition-colors"
+            >
+              GitHub
+            </a>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
+
+const projects = [
+  {
+    title: "Chaos-Based Audio Encryption",
+    description: "Research on chaotic systems for audio encryption, comparing 2D and 3D hyperchaotic systems using spectrogram analysis.",
+    technologies: ["Mathematical Modeling", "Signal Processing", "Data Visualization", "Spectrogram Analysis"],
+    longDescription: "Developed a novel approach to audio encryption using chaotic systems, focusing on the comparison between 2D and 3D hyperchaotic systems.",
+    challenges: [
+      "Implementing complex mathematical models",
+      "Optimizing encryption performance",
+      "Analyzing spectrograms for security validation"
+    ],
+    outcomes: [
+      "Enhanced encryption robustness",
+      "Published research findings",
+      "Improved audio security metrics"
+    ]
+  },
+  {
+    title: "Document Q&A System",
+    description: "Built a system that parses PDFs into text, tables, and images using LlamaParser and indexes them in a vector database.",
+    technologies: ["PDF Parsing", "Vector Database", "LLMs", "Streamlit"],
+    longDescription: "Created an intelligent document processing system capable of understanding and answering questions about PDF content.",
+    challenges: [
+      "Handling various PDF formats",
+      "Optimizing vector search",
+      "Integrating multiple LLM models"
+    ],
+    outcomes: [
+      "Improved document processing accuracy",
+      "Reduced query response time",
+      "Enhanced user experience"
+    ]
+  },
+  {
+    title: "BM25 Search Tool",
+    description: "Developed a Streamlit app that allows users to input up to 10 PDFs and retrieve answers based on BM25 search indexing.",
+    technologies: ["BM25 Algorithm", "Streamlit", "PDF Processing"],
+    longDescription: "Built a powerful search tool implementing the BM25 ranking algorithm for accurate document retrieval.",
+    challenges: [
+      "Implementing efficient indexing",
+      "Handling large PDF files",
+      "Optimizing search performance"
+    ],
+    outcomes: [
+      "Fast and accurate search results",
+      "User-friendly interface",
+      "Scalable architecture"
+    ]
+  },
+  {
+    title: "Deep Learning Video Detection",
+    description: "Created a deep learning model for detecting sequential patterns in video data, focusing on spliced frame sequences.",
+    technologies: ["TensorFlow", "OpenCV", "CNN/LSTM"],
+    longDescription: "Developed an advanced video analysis system using deep learning for pattern detection and sequence analysis.",
+    challenges: [
+      "Processing large video datasets",
+      "Training complex neural networks",
+      "Real-time detection implementation"
+    ],
+    outcomes: [
+      "High detection accuracy",
+      "Real-time processing capability",
+      "Reduced false positives"
+    ]
+  }
+];
