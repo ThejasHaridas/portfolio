@@ -2,109 +2,162 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─── Google Fonts: Press Start 2P (pixel font) ─────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 :root {
   --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 0, 0, 0;
-  --background-end-rgb: 0, 0, 0;
+  --background-start-rgb: 10, 10, 26;
+  --background-end-rgb: 10, 10, 26;
 }
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-    to bottom,
-    rgb(var(--background-start-rgb)),
-    rgb(var(--background-end-rgb))
-  );
+  background: #0a0a1a;
   min-height: 100vh;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
-/* Smooth Scrolling */
-html {
-  scroll-behavior: smooth;
+/* ─── Pixel Font Utility ─────────────────────────────────────────────────── */
+.font-pixel {
+  font-family: 'Press Start 2P', 'Courier New', monospace;
+  image-rendering: pixelated;
+  line-height: 1.8;
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
+/* ─── RPG Dialog Border ──────────────────────────────────────────────────── */
+.rpg-border {
+  border: 4px solid #ca8a04;
+  box-shadow:
+    0 0 0 4px #000000,
+    0 0 0 8px #92400e,
+    inset 0 0 0 2px #000000,
+    0 8px 32px rgba(0, 0, 0, 0.8);
 }
 
-::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
+/* ─── Pixel Rendering ────────────────────────────────────────────────────── */
+.pixel-art {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
 }
 
-::-webkit-scrollbar-thumb {
-  background: rgba(59, 130, 246, 0.5);
-  border-radius: 4px;
+/* ─── Game Keyframe Animations ───────────────────────────────────────────── */
+
+/* Character walk bob */
+@keyframes char-bob {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-3px); }
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(59, 130, 246, 0.7);
+/* Ember sparks rising from forge */
+@keyframes ember-rise {
+  0%   { transform: translateY(0px) translateX(0px) scale(1); opacity: 1; }
+  100% { transform: translateY(-70px) translateX(var(--drift, 10px)) scale(0); opacity: 0; }
 }
 
-/* Animations */
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
+/* Checkpoint sparkle pulse */
+@keyframes sparkle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.6; transform: scale(1.4); }
 }
 
-.animate-float {
-  animation: float 3s ease-in-out infinite;
+/* Star twinkling */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; }
+  50%       { opacity: 1; }
 }
 
-/* Typography */
-h1, h2, h3, h4, h5, h6 {
-  @apply font-bold tracking-tight;
+/* Typewriter cursor blink */
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
 }
 
-/* Project card hover effect */
-.project-card {
-  @apply transition-all duration-300 ease-in-out;
+/* Zone entry flash banner */
+@keyframes zone-flash {
+  0%   { opacity: 0; transform: translateY(-8px); }
+  20%  { opacity: 1; transform: translateY(0); }
+  70%  { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-8px); }
 }
 
-.project-card:hover {
-  @apply transform -translate-y-2;
+/* NPC hover float */
+@keyframes npc-hover {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-5px); }
 }
 
-/* Custom link hover effect */
-.hover-underline {
-  @apply relative;
+/* Chest lid open */
+@keyframes chest-lid-open {
+  0%   { transform: rotateX(0deg); }
+  100% { transform: rotateX(-110deg); }
 }
 
-.hover-underline::after {
-  @apply content-[''] absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300;
+/* Glow pulse for interactive objects */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 6px 2px var(--glow-color, #a78bfa); }
+  50%       { box-shadow: 0 0 16px 6px var(--glow-color, #a78bfa); }
 }
 
-.hover-underline:hover::after {
-  @apply w-full;
+/* Scroll float */
+@keyframes scroll-float {
+  0%, 100% { transform: rotate(-5deg) translateY(0px); }
+  50%       { transform: rotate(-5deg) translateY(-4px); }
 }
 
-/* Custom button styles */
-.btn {
-  @apply inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium transition-all duration-300;
+/* Torch flicker */
+@keyframes torch-flicker {
+  0%, 100% { opacity: 1; transform: scaleX(1); }
+  25%       { opacity: 0.8; transform: scaleX(0.9); }
+  75%       { opacity: 0.9; transform: scaleX(1.1); }
 }
 
-.btn-primary {
-  @apply bg-blue-600 text-white hover:bg-blue-700;
+/* Skill bar fill */
+@keyframes skill-fill {
+  from { width: 0%; }
 }
 
-.btn-secondary {
-  @apply border border-blue-600 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20;
+/* Start screen shimmer */
+@keyframes text-shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
 }
 
-/* Skills list styling */
-.skills-list {
-  @apply space-y-2;
+/* Press E prompt bounce */
+@keyframes prompt-bounce {
+  0%, 100% { transform: translateY(0) translateX(-50%); }
+  50%       { transform: translateY(-5px) translateX(-50%); }
 }
 
-.skills-list li {
-  @apply flex items-center space-x-2;
+/* ─── Animation Classes ──────────────────────────────────────────────────── */
+.animate-char-bob     { animation: char-bob 0.3s ease-in-out infinite; }
+.animate-sparkle      { animation: sparkle 1.4s ease-in-out infinite; }
+.animate-twinkle      { animation: twinkle var(--duration, 3s) ease-in-out infinite; }
+.animate-npc-hover    { animation: npc-hover 2s ease-in-out infinite; }
+.animate-glow-pulse   { animation: glow-pulse 2s ease-in-out infinite; }
+.animate-scroll-float { animation: scroll-float 2.5s ease-in-out infinite; }
+.animate-torch        { animation: torch-flicker 0.15s ease-in-out infinite; }
+.animate-zone-flash   { animation: zone-flash 2.5s ease-out forwards; }
+.animate-prompt       { animation: prompt-bounce 1s ease-in-out infinite; }
+
+/* Cursor blink for typewriter */
+.cursor-blink {
+  animation: cursor-blink 0.8s step-end infinite;
 }
 
-.skills-list li::before {
-  @apply content-['•'] text-blue-600;
+/* ─── Ground Tile Pattern ────────────────────────────────────────────────── */
+.ground-tile {
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(255,255,255,0.03) 0px,
+    rgba(255,255,255,0.03) 32px,
+    transparent 32px,
+    transparent 64px
+  );
 }
+
+/* ─── Scrollbar ──────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+::-webkit-scrollbar-thumb { background: rgba(202,138,4,0.4); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(202,138,4,0.7); }
