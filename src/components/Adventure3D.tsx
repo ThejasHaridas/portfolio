@@ -1,21 +1,30 @@
 'use client';
 
 import { Canvas } from '@react-three/fiber';
-import { Suspense, useState, useCallback } from 'react';
-import { ZoneId, DIALOGS } from '@/lib/gameData';
-import AdventureScene from './3d/AdventureScene';
-import DialogBox from './DialogBox';
-import AdventureHUD from './3d/AdventureHUD';
+import { Suspense, useState, useCallback, useEffect } from 'react';
+import { KeyboardControls } from '@react-three/drei';
+import { Physics } from '@react-three/rapier';
+import { ZoneId } from '@/lib/gameData';
+import GameScene from './3d/GameScene';
+import OverlayUI from './3d/OverlayUI';
+
+// Key map for vehicle controls
+const KEY_MAP = [
+  { name: 'forward', keys: ['ArrowUp', 'KeyW'] },
+  { name: 'backward', keys: ['ArrowDown', 'KeyS'] },
+  { name: 'left', keys: ['ArrowLeft', 'KeyA'] },
+  { name: 'right', keys: ['ArrowRight', 'KeyD'] },
+  { name: 'brake', keys: ['Space'] },
+  { name: 'reset', keys: ['KeyR'] },
+];
 
 export default function Adventure3D() {
   const [started, setStarted] = useState(false);
   const [activeZone, setActiveZone] = useState<ZoneId | null>(null);
   const [visitedZones, setVisitedZones] = useState<Set<ZoneId>>(new Set());
-  const [showDialog, setShowDialog] = useState(false);
 
-  const handleInteract = useCallback((zoneId: ZoneId) => {
+  const handleZoneTrigger = useCallback((zoneId: ZoneId) => {
     setActiveZone(zoneId);
-    setShowDialog(true);
     setVisitedZones(prev => {
       const next = new Set(prev);
       next.add(zoneId);
@@ -23,17 +32,25 @@ export default function Adventure3D() {
     });
   }, []);
 
-  const handleCloseDialog = useCallback(() => {
-    setShowDialog(false);
+  const handleClosePanel = useCallback(() => {
     setActiveZone(null);
+  }, []);
+
+  // Lock pointer / fullscreen hint
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.code === 'Escape') setActiveZone(null);
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
   }, []);
 
   if (!started) {
     return (
       <div className="fixed inset-0 bg-[#0a0a1a] flex flex-col items-center justify-center z-50">
-        {/* Starfield background */}
+        {/* Animated background */}
         <div className="absolute inset-0 overflow-hidden">
-          {Array.from({ length: 80 }).map((_, i) => (
+          {Array.from({ length: 60 }).map((_, i) => (
             <div
               key={i}
               className="absolute rounded-full bg-white animate-twinkle"
@@ -51,31 +68,46 @@ export default function Adventure3D() {
         </div>
 
         <div className="relative z-10 text-center px-4">
-          <h1
-            className="font-pixel text-yellow-400 mb-4"
-            style={{ fontSize: 20, textShadow: '0 0 30px rgba(250,204,21,0.5)' }}
-          >
-            THEJAS HARIDAS
-          </h1>
+          {/* 3D-style title */}
+          <div className="mb-2">
+            <span
+              className="font-pixel text-transparent bg-clip-text"
+              style={{
+                fontSize: 28,
+                backgroundImage: 'linear-gradient(180deg, #fbbf24 0%, #f97316 100%)',
+                textShadow: 'none',
+                WebkitTextStroke: '0px',
+              }}
+            >
+              THEJAS HARIDAS
+            </span>
+          </div>
           <p className="font-pixel text-gray-400 mb-2" style={{ fontSize: 8 }}>
             DATA SCIENCE · AI/ML · SOFTWARE ENGINEERING
           </p>
-          <p className="font-pixel text-gray-500 mb-10" style={{ fontSize: 7 }}>
-            ─── A 3D ADVENTURE PORTFOLIO ───
+
+          <div
+            className="my-8 mx-auto w-48 h-px"
+            style={{ background: 'linear-gradient(90deg, transparent, #fbbf24, transparent)' }}
+          />
+
+          <p className="font-pixel text-gray-500 mb-8" style={{ fontSize: 7 }}>
+            DRIVE AROUND · EXPLORE · DISCOVER
           </p>
 
           <button
             onClick={() => setStarted(true)}
-            className="font-pixel px-8 py-4 border-2 border-yellow-500 text-yellow-400
-                       hover:bg-yellow-500/20 transition-all duration-300 animate-pulse"
-            style={{ fontSize: 10 }}
+            className="font-pixel px-10 py-4 border-2 border-yellow-500 text-yellow-400
+                       hover:bg-yellow-500/20 hover:scale-105 transition-all duration-300 group"
+            style={{ fontSize: 12 }}
           >
-            ▶ BEGIN ADVENTURE
+            <span className="group-hover:animate-pulse">▶ START</span>
           </button>
 
-          <div className="mt-8 font-pixel text-gray-600" style={{ fontSize: 6 }}>
-            <p>WASD / Arrow Keys to move · Click islands to explore</p>
-            <p className="mt-1">Scroll to zoom · Drag to rotate</p>
+          <div className="mt-10 font-pixel text-gray-600 space-y-1" style={{ fontSize: 6 }}>
+            <p>🚗 WASD / ARROWS to drive</p>
+            <p>SPACE to brake · R to reset</p>
+            <p>Drive into glowing zones to explore</p>
           </div>
         </div>
       </div>
@@ -83,31 +115,48 @@ export default function Adventure3D() {
   }
 
   return (
-    <div className="fixed inset-0 bg-[#050510]">
-      <Canvas
-        camera={{ position: [0, 8, 18], fov: 55 }}
-        shadows
-        dpr={[1, 2]}
-        gl={{ antialias: true, alpha: false }}
-      >
-        <Suspense fallback={null}>
-          <AdventureScene
-            onInteract={handleInteract}
-            visitedZones={visitedZones}
-            dialogOpen={showDialog}
-          />
-        </Suspense>
-      </Canvas>
+    <div className="fixed inset-0 bg-[#1a1a2e]">
+      <KeyboardControls map={KEY_MAP}>
+        <Canvas
+          shadows
+          camera={{ position: [0, 12, 16], fov: 50 }}
+          dpr={[1, 1.5]}
+          gl={{ antialias: true }}
+        >
+          <Suspense fallback={null}>
+            <Physics gravity={[0, -30, 0]} timeStep="vary">
+              <GameScene
+                onZoneTrigger={handleZoneTrigger}
+                activeZone={activeZone}
+                visitedZones={visitedZones}
+              />
+            </Physics>
+          </Suspense>
+        </Canvas>
+      </KeyboardControls>
 
-      {/* HUD Overlay */}
-      <AdventureHUD visitedZones={visitedZones} currentZone={activeZone} />
+      {/* Overlay UI */}
+      <OverlayUI
+        activeZone={activeZone}
+        visitedZones={visitedZones}
+        onClose={handleClosePanel}
+      />
 
-      {/* Dialog overlay */}
-      {showDialog && activeZone && (
-        <DialogBox
-          dialog={DIALOGS[activeZone]}
-          onClose={handleCloseDialog}
-        />
+      {/* Controls hint */}
+      {!activeZone && (
+        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
+          <div
+            className="font-pixel text-gray-500 px-4 py-2"
+            style={{
+              fontSize: 6,
+              background: 'rgba(0,0,0,0.6)',
+              backdropFilter: 'blur(4px)',
+              borderRadius: 4,
+            }}
+          >
+            WASD TO DRIVE · SPACE TO BRAKE · R TO RESET POSITION
+          </div>
+        </div>
       )}
     </div>
   );
