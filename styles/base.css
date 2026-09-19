@@ -1,0 +1,263 @@
+/* ==========================================================================
+   base.css — reset, XP primitives, boot / login / desktop / shutdown
+   ========================================================================== */
+
+:root {
+  --xp-face: #ece9d8;
+  --xp-face-dark: #d4d0c8;
+  --xp-blue: #0058e6;
+  --xp-blue-light: #3a93ff;
+  --xp-select: #316ac5;
+  --xp-text: #000;
+  --xp-border-dark: #716f64;
+  --xp-border-light: #fff;
+  --taskbar-h: 34px;
+  --font-xp: Tahoma, 'Segoe UI', Verdana, Geneva, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: var(--font-xp);
+  font-size: 11px;
+  color: var(--xp-text);
+  background: #3a6ea5;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button { font-family: inherit; font-size: inherit; cursor: pointer; }
+a { color: #0033cc; }
+
+/* ----- XP flag (generic four-pane homage, drawn in CSS) ----- */
+.xp-flag {
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  width: 18px; height: 18px;
+  transform: perspective(28px) rotateY(-14deg);
+  flex: none;
+}
+.xp-flag i { display: block; border-radius: 1px; }
+.xp-flag i:nth-child(1) { background: #f35325; }
+.xp-flag i:nth-child(2) { background: #81bc06; }
+.xp-flag i:nth-child(3) { background: #05a6f0; }
+.xp-flag i:nth-child(4) { background: #ffba08; }
+.xp-flag--lg { width: 46px; height: 46px; gap: 3px; }
+
+/* ----- Generic XP button ----- */
+.xp-btn {
+  min-width: 74px;
+  padding: 3px 12px;
+  background: linear-gradient(180deg, #fff 0%, #f0efe8 45%, #e2dfd2 50%, #eeece1 100%);
+  border: 1px solid #a0a0a0;
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1px #fff;
+  color: #000;
+}
+.xp-btn:hover { border-color: #f0a825; box-shadow: inset 0 0 0 1px #fff, 0 0 4px rgba(240,168,37,.6); }
+.xp-btn:active { background: linear-gradient(180deg, #dcd8c8 0%, #ebe8dc 100%); }
+.xp-btn:disabled { color: #9a9a92; text-shadow: 1px 1px 0 #fff; cursor: default; }
+
+/* ==========================================================================
+   Boot screen
+   ========================================================================== */
+.boot-screen {
+  position: fixed; inset: 0; z-index: 9000;
+  background: #000;
+  display: grid; place-items: center;
+  color: #fff;
+}
+.boot-inner { display: grid; justify-items: center; gap: 30px; }
+.boot-logo { display: flex; align-items: center; gap: 14px; }
+.boot-wordmark { display: grid; line-height: 1; text-align: left; }
+.boot-micro { font-size: 12px; color: #c9c9c9; letter-spacing: .04em; }
+.boot-brand { font-size: 34px; font-weight: 700; letter-spacing: -.01em; }
+.boot-xp { color: #ff9c20; font-style: italic; margin-left: 4px; }
+
+.boot-bar { width: 180px; }
+.boot-bar-track {
+  height: 14px; padding: 2px;
+  border: 1px solid #5a5a5a; border-radius: 3px;
+  display: flex; gap: 3px; overflow: hidden;
+}
+.boot-bar-track i {
+  width: 12px; border-radius: 2px;
+  background: linear-gradient(180deg, #7ab8ff, #1a5fd0);
+  animation: bootSlide 1.9s linear infinite;
+}
+.boot-bar-track i:nth-child(2) { animation-delay: .18s; }
+.boot-bar-track i:nth-child(3) { animation-delay: .36s; }
+@keyframes bootSlide {
+  0%   { transform: translateX(-20px); opacity: 0; }
+  35%  { opacity: 1; }
+  100% { transform: translateX(178px); opacity: 0; }
+}
+.boot-footer { font-size: 11px; color: #9a9a9a; }
+
+/* ==========================================================================
+   Login screen
+   ========================================================================== */
+.login-screen {
+  position: fixed; inset: 0; z-index: 8500;
+  display: grid; grid-template-rows: 90px 1fr 80px;
+  background: linear-gradient(180deg, #5a7edc 0%, #416ad4 40%, #3a62cf 100%);
+  color: #fff;
+}
+.login-top, .login-bottom {
+  background: linear-gradient(180deg, #003ea8, #1d5fd0);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.35);
+  display: grid; align-items: center;
+}
+.login-top { border-bottom: 3px solid #f57b20; }
+.login-bottom { border-top: 3px solid #f57b20; padding: 0 40px; }
+.login-bottom p { margin: 0; font-size: 12px; color: #cfe0ff; }
+
+.login-main {
+  display: grid;
+  grid-template-columns: 1fr 2px 1fr;
+  align-items: center;
+  gap: 40px;
+  padding: 0 clamp(16px, 6vw, 80px);
+}
+.login-left { justify-self: end; text-align: right; display: grid; gap: 10px; justify-items: end; }
+.login-brand { font-size: 28px; font-weight: 700; }
+.login-brand span { color: #ff9c20; font-style: italic; margin-left: 4px; }
+.login-hint { margin: 0; font-size: 14px; color: #e4ecff; max-width: 240px; }
+.login-divider { height: 240px; background: linear-gradient(180deg, transparent, rgba(255,255,255,.6), transparent); }
+
+.user-tile {
+  display: flex; align-items: center; gap: 12px;
+  padding: 8px 18px 8px 8px;
+  background: transparent; border: 0; border-radius: 4px;
+  color: #fff; text-align: left;
+}
+.user-tile:hover, .user-tile:focus-visible { background: rgba(255,255,255,.16); outline: none; }
+.user-pic {
+  width: 54px; height: 54px;
+  display: grid; place-items: center;
+  background: #6b9fd8; border: 2px solid #fff; border-radius: 4px;
+  overflow: hidden;
+}
+.user-meta { display: grid; gap: 2px; }
+.user-meta strong { font-size: 16px; font-weight: 700; }
+.user-meta em { font-size: 11px; font-style: normal; color: #cfe0ff; }
+
+/* ==========================================================================
+   Desktop + wallpaper (Bliss-inspired, pure CSS — no Microsoft assets)
+   ========================================================================== */
+.desktop { position: fixed; inset: 0 0 var(--taskbar-h) 0; overflow: hidden; }
+
+.wallpaper { position: absolute; inset: 0; z-index: 0; }
+.wp-sky {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, #2b5fc4 0%, #4f8fdd 34%, #8cc3ec 62%, #cfe6f5 78%, #e8f2f8 100%);
+}
+.wp-clouds {
+  position: absolute; inset: 0 0 38% 0;
+  background:
+    radial-gradient(60px 26px at 18% 34%, rgba(255,255,255,.95), transparent 70%),
+    radial-gradient(90px 32px at 26% 40%, rgba(255,255,255,.85), transparent 72%),
+    radial-gradient(70px 24px at 62% 22%, rgba(255,255,255,.8), transparent 70%),
+    radial-gradient(110px 34px at 74% 30%, rgba(255,255,255,.7), transparent 74%),
+    radial-gradient(80px 26px at 44% 56%, rgba(255,255,255,.6), transparent 72%);
+  filter: blur(1px);
+}
+.wp-hill { position: absolute; left: -5%; right: -5%; border-radius: 50% 50% 0 0 / 100% 100% 0 0; }
+.wp-hill--far  { bottom: 22%; height: 18%; background: linear-gradient(180deg, #86bf52, #649f3c); opacity: .5; left: 18%; right: -25%; }
+.wp-hill--mid  { bottom: 16%; height: 26%; background: linear-gradient(180deg, #8ec756, #57972f); opacity: .7; left: -30%; right: 22%; }
+.wp-hill--near { bottom: -6%; height: 44%; background: linear-gradient(180deg, #8dcc52 0%, #6cae3a 40%, #4c8c27 100%); }
+
+/* ----- Desktop icons ----- */
+.icon-layer {
+  position: absolute; inset: 0; z-index: 1;
+  list-style: none; margin: 0;
+  padding: 6px 0 0 6px;
+  display: grid;
+  /* XP fills top-to-bottom, then wraps into a new column */
+  grid-auto-flow: column;
+  grid-template-rows: repeat(auto-fill, 84px);
+  grid-auto-columns: 82px;
+  justify-content: start;
+  align-content: start;
+}
+@media (max-width: 640px) {
+  .icon-layer {
+    grid-auto-flow: row;
+    grid-template-rows: none;
+    grid-template-columns: repeat(auto-fill, 78px);
+  }
+}
+
+.desk-icon {
+  width: 82px;
+  display: grid; justify-items: center; gap: 3px;
+  padding: 4px 2px;
+  background: none; border: 0;
+  color: #fff;
+  text-align: center;
+}
+.desk-icon .di-glyph {
+  width: 34px; height: 34px;
+  display: grid; place-items: center;
+  font-size: 26px; line-height: 1;
+  filter: drop-shadow(1px 1px 1px rgba(0,0,0,.5));
+}
+.desk-icon .di-label {
+  font-size: 11px; line-height: 1.25;
+  padding: 1px 3px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,.9);
+  border: 1px dotted transparent;
+  word-break: break-word;
+}
+.desk-icon[aria-selected="true"] .di-label { background: var(--xp-select); border-color: #9cb8e8; text-shadow: none; }
+.desk-icon[aria-selected="true"] .di-glyph { filter: drop-shadow(1px 1px 1px rgba(0,0,0,.5)) hue-rotate(200deg) saturate(1.4); }
+.desk-icon:focus-visible { outline: 1px dotted #fff; outline-offset: -2px; }
+
+.window-layer { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.window-layer > * { pointer-events: auto; }
+
+/* ==========================================================================
+   Context menu
+   ========================================================================== */
+.ctx-menu {
+  position: absolute; z-index: 7000;
+  min-width: 158px; padding: 2px;
+  background: #fff;
+  border: 1px solid #a0a0a0;
+  box-shadow: 2px 2px 4px rgba(0,0,0,.3);
+}
+.ctx-menu button {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%; padding: 4px 18px 4px 24px;
+  background: none; border: 0; text-align: left; color: #000;
+}
+.ctx-menu button:hover:not(:disabled) { background: var(--xp-select); color: #fff; }
+.ctx-menu button:disabled { color: #a0a0a0; cursor: default; }
+.ctx-menu hr { margin: 3px 1px; border: 0; border-top: 1px solid #dcdcd4; }
+.ctx-arrow { font-size: 9px; }
+
+/* ==========================================================================
+   Shutdown
+   ========================================================================== */
+.shutdown-screen {
+  position: fixed; inset: 0; z-index: 9500;
+  background: #000; color: #fff;
+  display: grid; place-items: center;
+}
+.shutdown-card { display: grid; justify-items: center; gap: 18px; }
+.shutdown-msg { margin: 0; font-size: 16px; color: #ff9c20; }
+
+/* ==========================================================================
+   Shared helpers
+   ========================================================================== */
+[hidden] { display: none !important; }
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px;
+  margin: -1px; padding: 0; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
