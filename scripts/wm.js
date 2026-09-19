@@ -91,8 +91,9 @@ const WM = (() => {
     const step = 24;
     const maxX = Math.max(10, window.innerWidth - w - 20);
     const maxY = Math.max(10, window.innerHeight - h - 50);
-    const x = Math.min(40 + cascade * step, maxX);
-    const y = Math.min(30 + cascade * step, maxY);
+    // start clear of the desktop icon column so icons stay reachable
+    const x = Math.min(104 + cascade * step, maxX);
+    const y = Math.min(28 + cascade * step, maxY);
     cascade = (cascade + 1) % 7;
     return { x, y };
   }

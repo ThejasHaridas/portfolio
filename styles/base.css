@@ -150,7 +150,7 @@ a { color: #0033cc; }
 /* ==========================================================================
    Desktop + wallpaper (Bliss-inspired, pure CSS — no Microsoft assets)
    ========================================================================== */
-.desktop { position: fixed; inset: 0 0 var(--taskbar-h) 0; overflow: hidden; }
+.desktop { position: fixed; inset: 0 0 calc(var(--taskbar-h) + env(safe-area-inset-bottom, 0px)) 0; overflow: hidden; }
 
 .wallpaper { position: absolute; inset: 0; z-index: 0; }
 .wp-sky {

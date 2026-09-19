@@ -4,7 +4,8 @@
 
 .taskbar {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 6000;
-  height: var(--taskbar-h);
+  height: calc(var(--taskbar-h) + env(safe-area-inset-bottom, 0px));
+  padding-bottom: env(safe-area-inset-bottom, 0px);
   display: flex; align-items: stretch; gap: 3px;
   background: linear-gradient(180deg,
       #245edb 0%, #3f8cf3 3%, #245edb 6%, #205bdb 10%,
@@ -93,7 +94,7 @@
    Start menu
    ========================================================================== */
 .start-menu {
-  position: fixed; left: 2px; bottom: var(--taskbar-h); z-index: 6500;
+  position: fixed; left: 2px; bottom: calc(var(--taskbar-h) + env(safe-area-inset-bottom, 0px)); z-index: 6500;
   width: 382px;
   border: 1px solid #0831d9;
   border-radius: 8px 8px 0 0;
